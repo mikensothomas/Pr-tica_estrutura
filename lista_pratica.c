@@ -48,6 +48,27 @@ void inserirNoFinal(Lista *lista, int num){
     lista->tam++;
 }
 
+void inserir_no_meio(Lista *lista, int ant, int num){
+    No *aux, *novo = (No*)malloc(sizeof(No));
+    if(novo){
+        novo->valor = num;
+        if(lista->inicio == NULL){
+            lista->inicio = novo;
+            novo->prox = NULL;
+        } else {
+            aux = lista->inicio;
+            while (aux->valor != ant && aux->prox){
+                aux = aux->prox;
+            }
+            novo->prox = aux->prox;
+            aux->prox = novo;
+        }
+    } else {
+        printf("Erro ao alocar memória\n");
+    }
+    lista->tam++;
+}
+
 void remover_na_lista(Lista *lista, int num){
     No *inicio = lista->inicio;
     No *noARemover = NULL;
@@ -95,14 +116,14 @@ void imprimirLista(Lista *lista){
 
 int main(){
 
-    int opcao, numero;
+    int opcao, numero, ant;
     Lista lista;
     iniciarLista(&lista);
 
     do
     {
         printf("FAÇA UMA ESCOLHA NO MENU\n\n");
-        printf("\t0 - Sair\n\t1 - Inserir no inicio\n\t2 - Inseir no final\n\t3 - Remover\n\t4 - Imprimir\n");
+        printf("\t0 - Sair\n\t1 - Inserir no inicio\n\t2 - Inseir no final\n\t3 - InserirM\n\t4 - Remover\n\t5 - Imprimir\n");
         scanf("%d", &opcao);
 
         switch (opcao){
@@ -120,11 +141,16 @@ int main(){
                 inserirNoFinal(&lista, numero);
                 break;
             case 3:
+                printf("Digite o número anterior e o número a ser inserido: ");
+                scanf("%d%d", &ant, &numero);
+                inserir_no_meio(&lista, ant, numero);
+                break;
+            case 4:
                 printf("Digite o número a ser removido: ");
                 scanf("%d", &numero);
                 remover_na_lista(&lista, numero);
                 break;
-            case 4:
+            case 5:
                 printf("Lista: ");
                 imprimirLista(&lista);
                 break;
